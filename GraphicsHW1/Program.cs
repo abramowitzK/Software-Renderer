@@ -5,13 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 using GraphicsHW.Primitives;
+using GraphicsHW.Util;
+using GraphicsHW.Math;
+
 namespace GraphicsHW
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            PostscriptReader rdr = new PostscriptReader("C:\\Users\\Kyle\\Desktop\\hw1-1.ps");
+            Arguments a = new Arguments(args);
+
+            
+            PostscriptReader rdr = new PostscriptReader(a.InputFile);
             List<Primitive> lines = rdr.ReadFile();
             foreach (var i in lines)
             {
