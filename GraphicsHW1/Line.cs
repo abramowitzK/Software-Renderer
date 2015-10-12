@@ -39,9 +39,10 @@ namespace GraphicsHW.Primitives
                 line.Start = new Point(int.Parse(splitLine[0]), int.Parse(splitLine[1]));
                 line.End = new Point(int.Parse(splitLine[2]), int.Parse(splitLine[3]));
             }
-            catch(FormatException ex)
+            catch (FormatException ex)
             {
                 Console.WriteLine("ERROR: Line in incorrect format!");
+                Console.WriteLine(ex.ToString());
             }
             return line;
         }

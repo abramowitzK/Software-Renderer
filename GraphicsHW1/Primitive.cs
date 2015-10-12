@@ -1,15 +1,15 @@
 ﻿namespace GraphicsHW.Primitives
 {
-public abstract class Primitive
+    public abstract class Primitive
     {
-    public abstract PrimitiveType Type
-    {
-    get;
+        public abstract PrimitiveType Type
+        {
+            get;
+        }
     }
-    }
-public enum PrimitiveType
+    public enum PrimitiveType
     {
-    Point,
-    Line
+        Point,
+        Line
     }
 }

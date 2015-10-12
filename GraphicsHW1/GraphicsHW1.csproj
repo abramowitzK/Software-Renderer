@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentParser.cs" />
     <Compile Include="Primitive.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Point.cs" />
