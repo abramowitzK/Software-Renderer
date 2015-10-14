@@ -15,7 +15,7 @@ namespace GraphicsHW.Util
             //Setting default values in case the user doesn't input a parameter
             this["-f"] = "hw1.ps";
             this["-s"] = 1.0;
-            this["-r"] = 0;
+            this["-r"] = 0.0;
             this["-m"] = 0;
             this["-n"] = 0;
             this["-a"] = 0;
@@ -37,56 +37,56 @@ namespace GraphicsHW.Util
         {
             get
             {
-                return (float)this["-s"];
+                return Convert.ToSingle(this["-s"]);
             }
         }
-        public int Rotation
+        public double Rotation
         {
             get
             {
-                return (int)this["-r"];
+                return Convert.ToDouble(this["-r"]);
             }
         }
         public int XTranslation
         {
             get
             {
-                return (int)this["-m"];
+                return Convert.ToInt32(this["-m"]);
             }
         }
         public int YTranslation
         {
             get
             {
-                return (int)this["-n"];
+                return Convert.ToInt32(this["-n"]);
             }
         }
         public int XLower
         {
             get
             {
-                return (int)this["-a"];
+                return Convert.ToInt32(this["-a"]);
             }
         }
         public int XUpper
         {
             get
             {
-                return (int)this["-b"];
+                return Convert.ToInt32(this["-b"]);
             }
         }
         public int YLower
         {
             get
             {
-                return (int)this["-c"];
+                return Convert.ToInt32(this["-c"]);
             }
         }
         public int YUpper
         {
             get
             {
-                return (int)this["-d"];
+                return Convert.ToInt32(this["-d"]);
             }
         }
         private void Parse()
