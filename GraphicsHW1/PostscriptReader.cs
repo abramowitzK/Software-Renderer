@@ -19,9 +19,9 @@ namespace GraphicsHW
         {
             m_filestream = new StreamReader(filePath);
         }
-        public List<Primitive> ReadFile()
+        public List<Line> ReadFile()
         {
-            List<Primitive> returnList = new List<Primitive>();
+            List<Line> returnList = new List<Line>();
             string line = null;
             LineNumber = -1;
             while (!(line = m_filestream.ReadLine()).StartsWith("%%%END"))

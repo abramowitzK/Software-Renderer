@@ -34,11 +34,11 @@ namespace GraphicsHW.Math
             T y = (dynamic)this[1][0] * vec[0] + (dynamic)this[1][1] * vec[1];
             return new Vector2<T>(x, y);
         }
-        public Vector2<int> Multiply(Vector2<int> vec)
+        public Vector2<float> Multiply(Vector2<float> vec)
         {
-            int x = (int)System.Math.Round((dynamic)this[0][0] * (dynamic)vec[0] + (dynamic)this[0][1] * (dynamic)vec[1]);
-            int y = (int)System.Math.Round((dynamic)this[1][0] * (dynamic)vec[0] + (dynamic)this[1][1] * (dynamic)vec[1]);
-            return new Vector2<int>(x, y);
+            float x = (float)((dynamic)this[0][0] * vec[0] + (dynamic)this[0][1] * vec[1]);
+            float y = (float)((dynamic)this[1][0] * vec[0] + (dynamic)this[1][1] * vec[1]);
+            return new Vector2<float>(x, y);
         }
         public Vector2<T> this[int i]
         {
@@ -59,6 +59,5 @@ namespace GraphicsHW.Math
         {
             return new Matrix2<double>(System.Math.Cos(theta), -System.Math.Sin(theta), System.Math.Sin(theta), System.Math.Cos(theta));
         }
-        public static Matrix2<>
     }
 }

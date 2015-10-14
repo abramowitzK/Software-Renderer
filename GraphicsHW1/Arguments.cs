@@ -19,8 +19,8 @@ namespace GraphicsHW.Util
             this["-m"] = 0;
             this["-n"] = 0;
             this["-a"] = 0;
-            this["-b"] = 0;
-            this["-c"] = 499;
+            this["-b"] = 499;
+            this["-c"] = 0;
             this["-d"] = 499;
             m_rawInput = args;
             Parse();  

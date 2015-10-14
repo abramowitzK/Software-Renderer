@@ -18,12 +18,15 @@ namespace GraphicsHW
             Arguments a = new Arguments(args);
             //Read the input file specified in the arguments
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
-            List<Primitive> lines = rdr.ReadFile();
-
+            List<Line> lines = rdr.ReadFile();
+            Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
+            lines = c.ClipLines(lines);
+            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
             foreach (Line i in lines)
             {
                 i.Scale(a.Scale, a.Scale);
-                i.Rotate(50.0);
+                i.Rotate(a.Rotation);
+                i.Translate(a.XTranslation, a.YTranslation);
                 Console.WriteLine(i);
             }
         }

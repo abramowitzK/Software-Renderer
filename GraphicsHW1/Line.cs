@@ -8,7 +8,7 @@ using GraphicsHW.Math;
 
 namespace GraphicsHW.Primitives
 {
-    class Line : Primitive
+    public class Line : Primitive
     {
         public override PrimitiveType Type
         {
@@ -17,20 +17,20 @@ namespace GraphicsHW.Primitives
                 return PrimitiveType.Line;
             }
         }
-        public Vector2<int> Start
+        public Vector2<float> Start
         {
             get;
             set;
         }
-        public Vector2<int> End
+        public Vector2<float> End
         {
             get;
             set;
         }
         public Line()
         {
-            this.Start = new Vector2<int>();
-            this.End = new Vector2<int>();
+            this.Start = new Vector2<float>();
+            this.End = new Vector2<float>();
         }
         public static Line ParseLine(string lineText)
         {
@@ -38,8 +38,8 @@ namespace GraphicsHW.Primitives
             Line line = new Line();
             try
             {
-                line.Start = new Vector2<int>(int.Parse(splitLine[0]), int.Parse(splitLine[1]));
-                line.End = new Vector2<int>(int.Parse(splitLine[2]), int.Parse(splitLine[3]));
+                line.Start = new Vector2<float>(float.Parse(splitLine[0]), float.Parse(splitLine[1]));
+                line.End = new Vector2<float>(float.Parse(splitLine[2]), float.Parse(splitLine[3]));
             }
             catch (FormatException ex)
             {
@@ -62,7 +62,10 @@ namespace GraphicsHW.Primitives
         }
         public void Translate(int x, int y)
         {
-            Matrix2<int> mat;
+            Start[0] += x;
+            Start[1] += y;
+            End[0] += x;
+            End[1] += y;
         }
         public override string ToString()
         {
