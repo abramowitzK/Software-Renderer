@@ -20,15 +20,18 @@ namespace GraphicsHW
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
             List<Line> lines = rdr.ReadFile();
             Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
-            lines = c.ClipLines(lines);
-            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
+            
+            
             foreach (Line i in lines)
             {
                 i.Scale(a.Scale, a.Scale);
                 i.Rotate(a.Rotation);
                 i.Translate(a.XTranslation, a.YTranslation);
-                Console.WriteLine(i);
             }
+            lines = c.ClipLines(lines);
+            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
+            pb.ScanConvertLines(lines);
+            Console.WriteLine(pb.WriteToXPM());
         }
     }
 }

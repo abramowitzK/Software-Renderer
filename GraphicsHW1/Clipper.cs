@@ -81,15 +81,12 @@ namespace GraphicsHW.Util
                     //Pick which point to work on
                     float x = 0;
                     float y = 0;
-                    BitCodes workingCode;
-                    if (code1 != BitCodes.Middle) //work with point.start
-                        workingCode = code1;
-                    else // work with point.end
-                        workingCode = code2;
+                    BitCodes workingCode = code1;
                     switch (bitNumber)
                     {
-                        case 0:
                         case 1:
+                            if ((code2 & BitCodes.Top) != 0)
+                                workingCode = code2;
                             // y0 > WT and y1 <= WT
                             // yc = WT
                             // xc = ((WT - y0)/(y1 - y0))*(x1 - x0) + x0
@@ -97,6 +94,8 @@ namespace GraphicsHW.Util
                             y = m_yMax;
                             break;
                         case 2:
+                            if ((code2 & BitCodes.Bottom) != 0)
+                                workingCode = code2;
                             // y0 < WB and y1 >= WB
                             // yc = WB
                             // xc = ((WB - y0)/(y1 - y0))*(x1 - x0) + x0
@@ -104,6 +103,8 @@ namespace GraphicsHW.Util
                             y = m_yMin;
                             break;
                         case 3:
+                            if ((code2 & BitCodes.Right) != 0)
+                                workingCode = code2;
                             // x0 > WR and x2 <= WR
                             // xc = WR
                             // yc = ((WR - x0)/(x1 - x0))*(y1 - y0) + y0
@@ -111,6 +112,8 @@ namespace GraphicsHW.Util
                             y = ((m_xMax - newLine.Start[0]) / (newLine.End[0] - newLine.Start[0])) * (newLine.End[1] - newLine.Start[1]) + newLine.Start[1];
                             break;
                         case 4:
+                            if ((code2 & BitCodes.Left) != 0)
+                                workingCode = code2;
                             // x0 < WL and x1 >= WL
                             // xc = WL
                             // yc = ((WL - x0)/(x1 - x0))*(y1 - y0) + y0
@@ -128,7 +131,7 @@ namespace GraphicsHW.Util
                     {
                         newLine.End[0] = x;
                         newLine.End[1] = y;
-                        code2 = GetCode(newLine.Start);
+                        code2 = GetCode(newLine.End);
                     }
 
 
