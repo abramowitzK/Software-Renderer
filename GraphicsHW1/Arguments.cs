@@ -14,7 +14,7 @@ namespace GraphicsHW.Util
         {
             //Setting default values in case the user doesn't input a parameter
             this["-f"] = "hw1.ps";
-            this["-s"] = 1.0;
+            this["-s"] = 5.0;
             this["-r"] = 0.0;
             this["-m"] = 0;
             this["-n"] = 0;

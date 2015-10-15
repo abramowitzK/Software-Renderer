@@ -41,7 +41,7 @@ namespace GraphicsHW.Util
         }
         public void WritePixel(int i, int j, bool isBlack)
         {
-            m_pixelArray[i, j] = isBlack;
+            m_pixelArray[m_height - j -1 , i] = isBlack;
         }
         public void ScanConvertLines(List<Line> lines)
         {
@@ -129,7 +129,6 @@ namespace GraphicsHW.Util
         {
             float rise = line.End[1] - line.Start[1];
             float run = line.End[0] - line.Start[0];
-
             return (rise / run);
         }
     }

@@ -22,10 +22,6 @@ namespace GraphicsHW.Util
             m_xMax = xmax;
             m_yMin = ymin;
             m_yMax = ymax;
-            Line test = new Line();
-            test.Start = new Vector2<float>(-50, -50);
-            test.End = new Vector2<float>(50, 50);
-            ClipLine(test);
         }
         // Returns a list of clipped lines to draw. Some input lines may be discarded if entirely out of drawing area.
         public List<Line> ClipLines(List<Line> lines)
