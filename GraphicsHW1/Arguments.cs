@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GraphicsHW.Util
 {
+    /*
+    Class used for parsing and storing arguments
+    */
     class Arguments : Dictionary<string, object>
     {
         string[] m_rawInput;

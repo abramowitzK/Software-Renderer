@@ -41,7 +41,6 @@ namespace GraphicsHW.Util
         }
         public void WritePixel(int i, int j, bool isBlack)
         {
-            // m_pixelArray[m_height - j -1 , i] = isBlack;
             m_pixelArray[i, m_height - j -1] = isBlack;
         }
         public void ScanConvertLines(List<Line> lines)
@@ -74,7 +73,7 @@ namespace GraphicsHW.Util
                     deltaY = 1f;
                     steps = (int)System.Math.Abs((line.Start[1] - line.End[1]));
                 }
-                else if (slope < 1f)
+                else if (System.Math.Abs(slope) < 1f)
                 {
                     deltaX = 1f;
                     deltaY = slope;
