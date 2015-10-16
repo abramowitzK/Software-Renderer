@@ -57,6 +57,7 @@ namespace GraphicsHW.Math
         }
         public static Matrix2<double> GetRotationMatrix(double theta)
         {
+            theta = theta * (System.Math.PI / 180.0);
             return new Matrix2<double>(System.Math.Cos(theta), -System.Math.Sin(theta), System.Math.Sin(theta), System.Math.Cos(theta));
         }
     }

@@ -23,14 +23,14 @@ namespace GraphicsHW.Util
         public string WriteToXPM()
         {
             
-            string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*""";
+            string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
             for (int i = 0; i < m_pixelArray.GetLength(0); i++)
             {
                 sb.Append(@"""");
                 for (int j = 0; j < m_pixelArray.GetLength(1); j++)
                 {
-                    if (m_pixelArray[i, j])
+                    if (m_pixelArray[j, i])
                         sb.Append("@");
                     else
                         sb.Append("-");
@@ -41,7 +41,8 @@ namespace GraphicsHW.Util
         }
         public void WritePixel(int i, int j, bool isBlack)
         {
-            m_pixelArray[m_height - j -1 , i] = isBlack;
+            // m_pixelArray[m_height - j -1 , i] = isBlack;
+            m_pixelArray[i, m_height - j -1] = isBlack;
         }
         public void ScanConvertLines(List<Line> lines)
         {
@@ -117,12 +118,12 @@ namespace GraphicsHW.Util
                         break;
                     if ((currentX < 0) || (currentY < 0))
                         break;
-                    WritePixel((int)System.Math.Round(currentX), (int)System.Math.Round(currentY), true);
+                    WritePixel((int)System.Math.Round(currentX, MidpointRounding.AwayFromZero), (int)System.Math.Round(currentY, MidpointRounding.AwayFromZero), true);
                 }
                 if(startedAtEnd)
-                    WritePixel((int)System.Math.Round(line.End[0]), (int)System.Math.Round(line.End[1]), true);
+                    WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
                 else
-                    WritePixel((int)System.Math.Round(line.End[0]), (int)System.Math.Round(line.End[1]), true);
+                    WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
             }
         }
         private float CalcSlope(Line line)

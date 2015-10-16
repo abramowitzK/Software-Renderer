@@ -104,8 +104,9 @@ namespace GraphicsHW.Util
                             // x0 > WR and x2 <= WR
                             // xc = WR
                             // yc = ((WR - x0)/(x1 - x0))*(y1 - y0) + y0
-                            x = m_xMax;
+                            
                             y = ((m_xMax - newLine.Start[0]) / (newLine.End[0] - newLine.Start[0])) * (newLine.End[1] - newLine.Start[1]) + newLine.Start[1];
+                            x = m_xMax;
                             break;
                         case 4:
                             if ((code2 & BitCodes.Left) != 0)
@@ -113,8 +114,9 @@ namespace GraphicsHW.Util
                             // x0 < WL and x1 >= WL
                             // xc = WL
                             // yc = ((WL - x0)/(x1 - x0))*(y1 - y0) + y0
-                            x = m_xMin;
+                            
                             y = ((m_xMin - newLine.Start[0]) / (newLine.End[0] - newLine.Start[0])) * (newLine.End[1] - newLine.Start[1]) + newLine.Start[1];
+                            x = m_xMin;
                             break;
                     }
                     if (code1 == workingCode)
