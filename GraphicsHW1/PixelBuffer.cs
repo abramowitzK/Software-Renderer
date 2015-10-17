@@ -14,9 +14,13 @@ namespace GraphicsHW.Util
         private bool[,] m_pixelArray;
         private int m_width;
         private int m_height;
+        private int m_ymax;
+        private int m_ymin;
 
         public PixelBuffer(int xmin, int xmax, int ymin, int ymax)
         {
+            m_ymin = ymin;
+            m_ymax = ymax;
             m_height = ymax - ymin + 1;
             m_width = xmax - xmin + 1;
             m_pixelArray = new bool[m_width, m_height];
@@ -27,10 +31,10 @@ namespace GraphicsHW.Util
             // Use string builder since strings are immutable in C# and are really slow to concatenate with + operator in a tight loop
             string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
-            for (int i = 0; i < m_pixelArray.GetLength(0); i++)
+            for (int i = 0; i < m_pixelArray.GetLength(1); i++)
             {
                 sb.Append(@"""");
-                for (int j = 0; j < m_pixelArray.GetLength(1); j++)
+                for (int j = 0; j < m_pixelArray.GetLength(0); j++)
                 {
                     if (m_pixelArray[j, i])
                         sb.Append("@");
@@ -47,7 +51,7 @@ namespace GraphicsHW.Util
         //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
         public void WritePixel(int i, int j, bool isBlack)
         {
-            m_pixelArray[i, m_height - j -1] = isBlack;
+            m_pixelArray[i, m_ymax - j] = isBlack;
         }
         public void ScanConvertLines(List<Line> lines)
         {
