@@ -35,10 +35,10 @@ namespace GraphicsHW.Util
             // Use string builder since strings are immutable in C# and are really slow to concatenate with + operator in a tight loop
             string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
-            for (int i = m_ymin; i < m_pixelArray.GetLength(1); i++)
+            for (int i = m_ymin; i < m_ymax; i++)
             {
                 sb.Append(@"""");
-                for (int j = m_xmin; j < m_pixelArray.GetLength(0); j++)
+                for (int j = m_xmin; j < m_xmax; j++)
                 {
                     if (m_pixelArray[j, i])
                         sb.Append("@");
