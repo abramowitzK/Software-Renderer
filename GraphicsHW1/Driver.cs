@@ -10,7 +10,7 @@ using GraphicsHW.Math;
 
 namespace GraphicsHW
 {
-    public class Program
+    public class Driver
     {
         static void Main(string[] args)
         {
@@ -19,19 +19,23 @@ namespace GraphicsHW
             //Read the input file specified in the arguments
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
             List<Line> lines = rdr.ReadFile();
+            //Create clipper object
             Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
             
-            
+            //Transform all our endpoints
             foreach (Line i in lines)
             {
                 i.Scale(a.Scale, a.Scale);
                 i.Rotate(a.Rotation);
                 i.Translate(a.XTranslation, a.YTranslation);
             }
+            //Clip lines
             lines = c.ClipLines(lines);
+            //Draw lines
             PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
             pb.ScanConvertLines(lines);
-            Console.WriteLine(pb.WriteToXPM());
+            //Write to console
+            Console.Write(pb.WriteToXPM());
         }
     }
 }

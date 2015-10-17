@@ -66,9 +66,8 @@
     <Compile Include="PixelBuffer.cs" />
     <Compile Include="Primitive.cs" />
     <Compile Include="Line.cs" />
-    <Compile Include="Point.cs" />
     <Compile Include="PostscriptReader.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Driver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vector2.cs" />
   </ItemGroup>

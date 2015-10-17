@@ -34,6 +34,7 @@ namespace GraphicsHW.Math
             T y = (dynamic)this[1][0] * vec[0] + (dynamic)this[1][1] * vec[1];
             return new Vector2<T>(x, y);
         }
+        //Can't perform arithmetic with Generic types conveniently. Dynamic allows types to be determined at runtime and perform the correct math
         public Vector2<float> Multiply(Vector2<float> vec)
         {
             float x = (float)((dynamic)this[0][0] * vec[0] + (dynamic)this[0][1] * vec[1]);

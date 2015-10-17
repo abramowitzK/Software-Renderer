@@ -7,8 +7,10 @@ using GraphicsHW.Primitives;
 
 namespace GraphicsHW.Util
 {
+    //Stores the framebuffer and contains the drawing routines as well as the xpm writing routines
     public class PixelBuffer
     {
+        //This declares a multidimensional array. Size specified at object instantiation
         private bool[,] m_pixelArray;
         private int m_width;
         private int m_height;
@@ -22,7 +24,7 @@ namespace GraphicsHW.Util
         }
         public string WriteToXPM()
         {
-            
+            // Use string builder since strings are immutable in C# and are really slow to concatenate with + operator in a tight loop
             string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
             for (int i = 0; i < m_pixelArray.GetLength(0); i++)
@@ -37,8 +39,12 @@ namespace GraphicsHW.Util
                 }
                 sb.Append(@""",");
             }
+            sb.Append("}");
+            //Remove that extra comma, even though it doesn't seem to be a problem
+            sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
+        //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
         public void WritePixel(int i, int j, bool isBlack)
         {
             m_pixelArray[i, m_height - j -1] = isBlack;
@@ -73,7 +79,7 @@ namespace GraphicsHW.Util
                     deltaY = 1f;
                     steps = (int)System.Math.Abs((line.Start[1] - line.End[1]));
                 }
-                else if (System.Math.Abs(slope) < 1f)
+                else if (System.Math.Abs(slope) < 1f) //Forgetting to do absolute value is what caused the skips in the line...
                 {
                     deltaX = 1f;
                     deltaY = slope;

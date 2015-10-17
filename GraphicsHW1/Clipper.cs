@@ -138,8 +138,8 @@ namespace GraphicsHW.Util
         }
         private BitCodes GetCode(Vector2<float> point)
         {
-            int x = (int)point[0];
-            int y = (int)point[1];
+            float x = point[0];
+            float y = point[1];
             // Start out in middle. Change if necessary by or-ing
             BitCodes code = BitCodes.Middle;
             if (x < m_xMin)
