@@ -16,11 +16,15 @@ namespace GraphicsHW.Util
         private int m_height;
         private int m_ymax;
         private int m_ymin;
+        private int m_xmin;
+        private int m_xmax;
 
         public PixelBuffer(int xmin, int xmax, int ymin, int ymax)
         {
             m_ymin = ymin;
             m_ymax = ymax;
+            m_xmin = xmin;
+            m_xmax = xmax;
             m_height = ymax - ymin + 1;
             m_width = xmax - xmin + 1;
             m_pixelArray = new bool[m_width, m_height];
@@ -31,10 +35,10 @@ namespace GraphicsHW.Util
             // Use string builder since strings are immutable in C# and are really slow to concatenate with + operator in a tight loop
             string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
-            for (int i = 0; i < m_pixelArray.GetLength(1); i++)
+            for (int i = m_ymin; i < m_pixelArray.GetLength(1); i++)
             {
                 sb.Append(@"""");
-                for (int j = 0; j < m_pixelArray.GetLength(0); j++)
+                for (int j = m_xmin; j < m_pixelArray.GetLength(0); j++)
                 {
                     if (m_pixelArray[j, i])
                         sb.Append("@");
