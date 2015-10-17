@@ -62,7 +62,6 @@
     <Compile Include="Arguments.cs" />
     <Compile Include="Clipper.cs" />
     <Compile Include="Matrix2.cs" />
-    <Compile Include="Matrix3.cs" />
     <Compile Include="PixelBuffer.cs" />
     <Compile Include="Primitive.cs" />
     <Compile Include="Line.cs" />
