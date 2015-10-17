@@ -56,7 +56,7 @@ namespace GraphicsHW.Util
         public void WritePixel(int i, int j, bool isBlack)
         {
             int i_final = i - m_xmin;
-            int j_final = m_ymax - j;
+            int j_final = m_height - j + m_ymin - 1;
             m_pixelArray[i_final, j_final] = isBlack;
         }
         public void ScanConvertLines(List<Line> lines)
