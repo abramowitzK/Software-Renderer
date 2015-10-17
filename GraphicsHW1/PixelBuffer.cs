@@ -129,7 +129,7 @@ namespace GraphicsHW.Util
                 {
                     currentX += deltaX;
                     currentY += deltaY;
-                    if ((currentX > m_width - 1) || (currentY > m_height - 1))
+                    if ((currentX > m_xmax) || (currentY > m_ymax))
                         break;
                     if ((currentX < 0) || (currentY < 0))
                         break;

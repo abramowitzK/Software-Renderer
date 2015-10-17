@@ -17,14 +17,14 @@ namespace GraphicsHW.Util
         {
             //Setting default values in case the user doesn't input a parameter
             this["-f"] = "hw1.ps";
-            this["-s"] = 1.0;
-            this["-r"] = 0.0;
-            this["-m"] = 0;
-            this["-n"] = 0;
-            this["-a"] = 0;
-            this["-b"] = 0;
-            this["-c"] = 499;
-            this["-d"] = 499;
+            this["-s"] = 0.5;
+            this["-r"] = 30.0;
+            this["-m"] = 100;
+            this["-n"] = 100;
+            this["-a"] = 25;
+            this["-b"] = 50;
+            this["-c"] = 399;
+            this["-d"] = 399;
             m_rawInput = args;
             Parse();  
         }
