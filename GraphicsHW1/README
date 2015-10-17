@@ -1,8 +1,16 @@
 To build and run:
-make run args
+make ARGS="your args here" run
 
 make clean to clean
 make build to build
+
+This program, given a postscript file containing lines, will output an xpm file to stdout containing the clipped and transformed lines (controlled by
+user input).
+
+Language : C#
+Developed on windows for .NET 4. Runs on Linux with Mono v3.x 
+
+File containing main: Driver.cs
 
 I haven't implemented the transformations using homogenous coordinates yet but they will be implemented next assignment. I ran into a lot of wierd
 little bugs that needed to be fixed and it took a alot of time. I ran through all the test cases given in the assignment and the outputs look good
