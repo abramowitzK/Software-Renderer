@@ -35,10 +35,10 @@ namespace GraphicsHW.Util
             // Use string builder since strings are immutable in C# and are really slow to concatenate with + operator in a tight loop
             string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
-            for (int i = m_ymin; i < m_ymax; i++)
+            for (int i = 0; i < m_pixelArray.GetLength(1); i++)
             {
                 sb.Append(@"""");
-                for (int j = m_xmin; j < m_xmax; j++)
+                for (int j = 0; j < m_pixelArray.GetLength(0); j++)
                 {
                     if (m_pixelArray[j, i])
                         sb.Append("@");
@@ -55,7 +55,9 @@ namespace GraphicsHW.Util
         //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
         public void WritePixel(int i, int j, bool isBlack)
         {
-            m_pixelArray[i, m_ymax - j] = isBlack;
+            int i_final = i - m_xmin;
+            int j_final = m_ymax - j;
+            m_pixelArray[i_final, j_final] = isBlack;
         }
         public void ScanConvertLines(List<Line> lines)
         {
