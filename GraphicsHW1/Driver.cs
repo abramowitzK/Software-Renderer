@@ -19,16 +19,15 @@ namespace GraphicsHW
             //Read the input file specified in the arguments
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
             List<Primitive> prims = rdr.ReadFile();
-            List<Line> lines = prims.OfType<Line>().ToList();
+            List<Line2D> lines = prims.OfType<Line2D>().ToList();
             //Create clipper object
             Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
             
             //Transform all our endpoints
-            foreach (Line i in lines)
+            foreach (Line2D i in lines)
             {
-                i.Scale(a.Scale, a.Scale);
-                i.Rotate(a.Rotation);
-                i.Translate(a.XTranslation, a.YTranslation);
+                //This method combines all the homogenoeous matrices into one and multiplies the endpoints by them
+                i.Transform(a.Scale, a.Scale, a.Rotation, a.XTranslation, a.YTranslation);
             }
             //Clip lines
             lines = c.ClipLines(lines);

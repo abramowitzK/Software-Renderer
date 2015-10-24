@@ -57,6 +57,13 @@ namespace GraphicsHW.Math
             }
             return ret;
         }
+        public static Vector3<double> operator *(Matrix3<T> mat, Vector3<double> vec)
+        {
+            double x = (dynamic)mat[0][0] * vec.X + (dynamic)mat[0][1] * vec.Y + (dynamic)mat[0][2] * vec.Z;
+            double y = (dynamic)mat[1][0] * vec.X + (dynamic)mat[1][1] * vec.Y + (dynamic)mat[1][2] * vec.Z;
+            double z = 1.0;
+            return new Vector3<double>(x, y, z);
+        }
         public override string ToString()
         {
             return this[0].ToString() + "\n" + this[1].ToString() + "\n" + this[2].ToString();

@@ -36,7 +36,7 @@ namespace GraphicsHW.Util
             }
 
         }
-        public float Scale
+        public double Scale
         {
             get
             {

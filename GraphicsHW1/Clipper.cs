@@ -11,10 +11,10 @@ namespace GraphicsHW.Util
 {
     public class Clipper
     {
-        private float m_xMin;
-        private float m_xMax;
-        private float m_yMin;
-        private float m_yMax;
+        private double m_xMin;
+        private double m_xMax;
+        private double m_yMin;
+        private double m_yMax;
 
         public Clipper(int xmin, int xmax, int ymin, int ymax)
         {
@@ -24,12 +24,12 @@ namespace GraphicsHW.Util
             m_yMax = ymax;
         }
         // Returns a list of clipped lines to draw. Some input lines may be discarded if entirely out of drawing area.
-        public List<Line> ClipLines(List<Line> lines)
+        public List<Line2D> ClipLines(List<Line2D> lines)
         {
-            List<Line> newList = new List<Line>();
+            List<Line2D> newList = new List<Line2D>();
             foreach (var line in lines)
             {
-                Line temp;
+                Line2D temp;
                 if (null != (temp = ClipLine(line)))
                 {
                     newList.Add(temp);
@@ -38,12 +38,12 @@ namespace GraphicsHW.Util
             return newList;
         }
         // Using the cohen sutherland algorithm
-        private Line ClipLine(Line line)
+        private Line2D ClipLine(Line2D line)
         {
             
-            Line newLine = new Line();
-            newLine.Start = new Vector2<float>(line.Start[0], line.Start[1]);
-            newLine.End = new Vector2<float>(line.End[0], line.End[1]);
+            Line2D newLine = new Line2D();
+            newLine.Start = new Vector3<double>(line.Start[0], line.Start[1], 1);
+            newLine.End = new Vector3<double>(line.End[0], line.End[1], 1);
             BitCodes code1 = GetCode(newLine.Start);
             BitCodes code2 = GetCode(newLine.End);
             while (true)
@@ -55,7 +55,7 @@ namespace GraphicsHW.Util
                 }
                 else if ((code1 & code2) != BitCodes.Middle)
                 {
-                    //Line totally outside area
+                    //Line2D totally outside area
                     return null;
                 }
                 else
@@ -75,8 +75,8 @@ namespace GraphicsHW.Util
                     }
 
                     //Pick which point to work on
-                    float x = 0;
-                    float y = 0;
+                    double x = 0;
+                    double y = 0;
                     BitCodes workingCode = code1;
                     switch (bitNumber)
                     {
@@ -136,10 +136,10 @@ namespace GraphicsHW.Util
                 }
             }
         }
-        private BitCodes GetCode(Vector2<float> point)
+        private BitCodes GetCode(Vector3<double> point)
         {
-            float x = point[0];
-            float y = point[1];
+            double x = point[0];
+            double y = point[1];
             // Start out in middle. Change if necessary by or-ing
             BitCodes code = BitCodes.Middle;
             if (x < m_xMin)

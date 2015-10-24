@@ -33,11 +33,11 @@ namespace GraphicsHW.Math
             return new Vector2<T>(x, y);
         }
         //Can't perform arithmetic with Generic types conveniently. Dynamic allows types to be determined at runtime and perform the correct math
-        public Vector2<float> Multiply(Vector2<float> vec)
+        public Vector2<double> Multiply(Vector2<double> vec)
         {
-            float x = (float)((dynamic)this[0][0] * vec[0] + (dynamic)this[0][1] * vec[1]);
-            float y = (float)((dynamic)this[1][0] * vec[0] + (dynamic)this[1][1] * vec[1]);
-            return new Vector2<float>(x, y);
+            double x = (double)((dynamic)this[0][0] * vec[0] + (dynamic)this[0][1] * vec[1]);
+            double y = (double)((dynamic)this[1][0] * vec[0] + (dynamic)this[1][1] * vec[1]);
+            return new Vector2<double>(x, y);
         }
         public Vector2<T> this[int i]
         {
@@ -50,9 +50,9 @@ namespace GraphicsHW.Math
                 m_data[i] = value;
             }
         }
-        public static Matrix2<float> GetScalingMatrix(float xScale, float yScale)
+        public static Matrix2<double> GetScalingMatrix(double xScale, double yScale)
         {
-            return new Matrix2<float>(xScale, 0, 0, yScale);
+            return new Matrix2<double>(xScale, 0, 0, yScale);
         }
         public static Matrix2<double> GetRotationMatrix(double theta)
         {

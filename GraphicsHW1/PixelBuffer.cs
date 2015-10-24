@@ -59,20 +59,20 @@ namespace GraphicsHW.Util
             int j_final = m_height - j + m_ymin - 1;
             m_pixelArray[i_final, j_final] = isBlack;
         }
-        public void ScanConvertLines(List<Line> lines)
+        public void ScanConvertLines(List<Line2D> lines)
         {
-            float deltaX;
-            float deltaY;
+            double deltaX;
+            double deltaY;
             //Need to check for vertical line...
             //var is like auto in c++11
             foreach (var line in lines)
             {
                 int steps = 0;
-                float currentX = 0f;
-                float currentY = 0f;
-                float slope = CalcSlope(line);
+                double currentX = 0f;
+                double currentY = 0f;
+                double slope = CalcSlope(line);
                 bool startedAtEnd = false;
-                if (float.IsInfinity(slope))
+                if (double.IsInfinity(slope))
                 {
                     deltaX = 0;
                     if (line.Start[1] > line.End[1])
@@ -141,10 +141,10 @@ namespace GraphicsHW.Util
                     WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
             }
         }
-        private float CalcSlope(Line line)
+        private double CalcSlope(Line2D line)
         {
-            float rise = line.End[1] - line.Start[1];
-            float run = line.End[0] - line.Start[0];
+            double rise = line.End[1] - line.Start[1];
+            double run = line.End[0] - line.Start[0];
             return (rise / run);
         }
     }

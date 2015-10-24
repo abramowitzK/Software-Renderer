@@ -36,7 +36,7 @@ namespace GraphicsHW
                 {
                     if (line.EndsWith("Line"))
                     {
-                        returnList.Add(Line.ParseLine(line));
+                        returnList.Add(Line2D.ParseLine(line));
                     }
                     else if (line.EndsWith("moveto"))
                     {

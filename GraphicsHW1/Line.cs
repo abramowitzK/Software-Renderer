@@ -5,41 +5,41 @@ using System.Text;
 using System.Threading.Tasks;
 
 using GraphicsHW.Math;
-
+using GraphicsHW.Util;
 namespace GraphicsHW.Primitives
 {
-    public class Line : Primitive
+    public class Line2D : Primitive
     {
         public override PrimitiveType Type
         {
             get
             {
-                return PrimitiveType.Line;
+                return PrimitiveType.Line2D;
             }
         }
-        public Vector2<float> Start
+        public Vector3<double> Start
         {
             get;
             set;
         }
-        public Vector2<float> End
+        public Vector3<double> End
         {
             get;
             set;
         }
-        public Line()
+        public Line2D()
         {
-            this.Start = new Vector2<float>();
-            this.End = new Vector2<float>();
+            this.Start = new Vector3<double>();
+            this.End = new Vector3<double>();
         }
-        public static Line ParseLine(string lineText)
+        public static Line2D ParseLine(string lineText)
         {
             string[] splitLine = lineText.Split(' ');
-            Line line = new Line();
+            Line2D line = new Line2D();
             try
             {
-                line.Start = new Vector2<float>(float.Parse(splitLine[0]), float.Parse(splitLine[1]));
-                line.End = new Vector2<float>(float.Parse(splitLine[2]), float.Parse(splitLine[3]));
+                line.Start = new Vector3<double>(double.Parse(splitLine[0]), double.Parse(splitLine[1]), 1);
+                line.End = new Vector3<double>(double.Parse(splitLine[2]), double.Parse(splitLine[3]), 1);
             }
             catch (FormatException ex)
             {
@@ -48,24 +48,29 @@ namespace GraphicsHW.Primitives
             }
             return line;
         }
-        public void Scale(float xScale, float yScale)
+        public void Scale(double xScale, double yScale)
         {
-            Matrix2<float> mat = Matrix2<float>.GetScalingMatrix(xScale, yScale);
-            Start = mat.Multiply(Start);
-            End = mat.Multiply(End);
+            Matrix3<double> mat = Trans2D.GetScalingMatrix(xScale, yScale);
+            Start = mat * Start;
+            End = mat * End;
         }
         public void Rotate(double theta)
         {
-            Matrix2<double> mat = Matrix2<double>.GetRotationMatrix(theta);
-            Start = mat.Multiply(Start);
-            End = mat.Multiply(End);
+            Matrix3<double> mat = Trans2D.GetRotationMatrix(theta);
+            Start = mat * Start;
+            End = mat * End;
         }
         public void Translate(int x, int y)
         {
-            Start[0] += x;
-            Start[1] += y;
-            End[0] += x;
-            End[1] += y;
+            Matrix3<double> mat = Trans2D.GetTranslationMatrix(x, y);
+            Start = mat * Start;
+            End = mat * End;
+        }
+        public void Transform(double xScale, double yScale, double theta, int xTranslation, int yTranslation)
+        {
+            Matrix3<double> combined = Trans2D.GetTranslationMatrix(xTranslation, yTranslation) * Trans2D.GetRotationMatrix(theta) * Trans2D.GetScalingMatrix(xScale, yScale);
+            Start = combined * Start;
+            End = combined * End;
         }
         public override string ToString()
         {
