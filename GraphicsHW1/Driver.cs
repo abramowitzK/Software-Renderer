@@ -20,6 +20,7 @@ namespace GraphicsHW
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
             List<Primitive> prims = rdr.ReadFile();
             List<Line2D> lines = prims.OfType<Line2D>().ToList();
+            List<Polygon2D> polygons = prims.OfType<Polygon2D>().ToList();
             //Create clipper object
             Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
             
@@ -27,6 +28,10 @@ namespace GraphicsHW
             foreach (Line2D i in lines)
             {
                 //This method combines all the homogenoeous matrices into one and multiplies the endpoints by them
+                i.Transform(a.Scale, a.Scale, a.Rotation, a.XTranslation, a.YTranslation);
+            }
+            foreach (Polygon2D i in polygons)
+            {
                 i.Transform(a.Scale, a.Scale, a.Rotation, a.XTranslation, a.YTranslation);
             }
             //Clip lines

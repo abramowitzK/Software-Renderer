@@ -24,6 +24,7 @@ namespace GraphicsHW
             List<Primitive> returnList = new List<Primitive>();
             string line = null;
             LineNumber = -1;
+            int polygonIndex = 0;
             while (!(line = m_filestream.ReadLine()).StartsWith("%%%END"))
             {
                 if (line == "%%%BEGIN")
@@ -40,15 +41,20 @@ namespace GraphicsHW
                     }
                     else if (line.EndsWith("moveto"))
                     {
-                        //begin polygon
+                        //Begin polygon
+                        polygonIndex = returnList.Count;
+                        returnList.Add(new Polygon2D(Polygon2D.ParseVertex(line)));
+
                     }
                     else if (line.EndsWith("lineto"))
                     {
+                        (returnList[polygonIndex] as Polygon2D).AddVertex(Polygon2D.ParseVertex(line));
                         //Drawing polygon
                     }
                     else if (line.EndsWith("stroke"))
                     {
                         //End polygon
+                        polygonIndex = -1;
                     }
                     else
                     {

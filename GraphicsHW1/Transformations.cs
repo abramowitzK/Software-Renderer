@@ -37,6 +37,10 @@ namespace GraphicsHW.Util
                  0,0,1
                 );
         }
+        public static Matrix3<double> GetCombinedMatrix(double xScale, double yScale, double theta, int xTranslation, int yTranslation)
+        {
+            return GetTranslationMatrix(xTranslation, yTranslation) * GetRotationMatrix(theta) * GetScalingMatrix(xScale, yScale);
+        }
     }
     public static class Trans3D
     {
