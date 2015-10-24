@@ -13,20 +13,24 @@ namespace GraphicsHW.Primitives
     {
         //List of vertices stored in homogenous coordinates in counterclockwise order
         private List<Vector3<double>> m_vertices;
+
         public Polygon2D()
         {
             m_vertices = new List<Vector3<double>>();
         }
+
         public Polygon2D(double x, double y)
         {
             m_vertices = new List<Vector3<double>>();
             m_vertices.Add(new Vector3<double>(x, y, 1.0));
         }
+
         public Polygon2D(Vector3<double> start)
         {
             m_vertices = new List<Vector3<double>>();
             m_vertices.Add(start);
         }
+
         public void Transform(double xScale, double yScale, double theta, int xTranslation, int yTranslation)
         {
             Matrix3<double> mat = Trans2D.GetCombinedMatrix(xScale, yScale, theta, xTranslation, yTranslation);
@@ -35,10 +39,17 @@ namespace GraphicsHW.Primitives
                 m_vertices[i] = mat * m_vertices[i];
             }
         }
+
+        public List<Vector3<double>> GetVertices()
+        {
+            return m_vertices;
+        }
+
         public void AddVertex(Vector3<double> vertex)
         {
             m_vertices.Add(vertex);
         }
+
         public List<Line2D> GetLines()
         {
             List<Line2D> lines = new List<Line2D>();
@@ -51,11 +62,13 @@ namespace GraphicsHW.Primitives
             }
             return lines;
         }
+
         public static Vector3<double> ParseVertex(string input)
         {
             string[] split = input.Split(' ');
             return new Vector3<double>(double.Parse(split[0]), double.Parse(split[1]), 1.0);
         }
+
         public override PrimitiveType Type
         {
             get

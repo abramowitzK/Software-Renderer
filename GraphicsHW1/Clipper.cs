@@ -23,6 +23,7 @@ namespace GraphicsHW.Util
             m_yMin = ymin;
             m_yMax = ymax;
         }
+        #region LineClipping
         // Returns a list of clipped lines to draw. Some input lines may be discarded if entirely out of drawing area.
         public List<Line2D> ClipLines(List<Line2D> lines)
         {
@@ -131,11 +132,10 @@ namespace GraphicsHW.Util
                         newLine.End[1] = y;
                         code2 = GetCode(newLine.End);
                     }
-
-
                 }
             }
         }
+
         private BitCodes GetCode(Vector3<double> point)
         {
             double x = point[0];
@@ -161,5 +161,38 @@ namespace GraphicsHW.Util
             Bottom = 4,
             Top = 8,
         }
+        #endregion
+        #region PolygonClipping
+        public List<Polygon2D> ClipPolygons(List<Polygon2D> polygons)
+        {
+            List<Polygon2D> newList = new List<Polygon2D>();
+            foreach (var polygon in polygons)
+            {
+                Polygon2D temp;
+                if (null != (temp = ClipPolygon(polygon)))
+                {
+                    newList.Add(temp);
+                }
+            }
+            return newList;
+        }
+        private Polygon2D ClipPolygon(Polygon2D polygon)
+        {
+            List<Vector3<double>> output = new List<Vector3<double>>();
+            var vertices = polygon.GetVertices();
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+
+            }
+            return new Polygon2D();
+        }
+        private bool IsInside(Vector3<double> vertex)
+        {
+            if (vertex.X > m_xMax || vertex.X < m_yMin || vertex.Y > m_yMax || vertex.Y < m_yMin)
+                return false;
+            return true;
+        }
+        #endregion
     }
 }
