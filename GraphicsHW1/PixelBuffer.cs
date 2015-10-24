@@ -64,7 +64,7 @@ namespace GraphicsHW.Util
             float deltaX;
             float deltaY;
             //Need to check for vertical line...
-            //var is like auto in c++11
+
             foreach (var line in lines)
             {
                 int steps = 0;
