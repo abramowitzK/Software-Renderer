@@ -19,9 +19,9 @@ namespace GraphicsHW
         {
             m_filestream = new StreamReader(filePath);
         }
-        public List<Line> ReadFile()
+        public List<Primitive> ReadFile()
         {
-            List<Line> returnList = new List<Line>();
+            List<Primitive> returnList = new List<Primitive>();
             string line = null;
             LineNumber = -1;
             while (!(line = m_filestream.ReadLine()).StartsWith("%%%END"))
@@ -37,6 +37,18 @@ namespace GraphicsHW
                     if (line.EndsWith("Line"))
                     {
                         returnList.Add(Line.ParseLine(line));
+                    }
+                    else if (line.EndsWith("moveto"))
+                    {
+                        //begin polygon
+                    }
+                    else if (line.EndsWith("lineto"))
+                    {
+                        //Drawing polygon
+                    }
+                    else if (line.EndsWith("stroke"))
+                    {
+                        //End polygon
                     }
                     else
                     {

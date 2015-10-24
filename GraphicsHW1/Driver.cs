@@ -18,7 +18,8 @@ namespace GraphicsHW
             Arguments a = new Arguments(args);
             //Read the input file specified in the arguments
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
-            List<Line> lines = rdr.ReadFile();
+            List<Primitive> prims = rdr.ReadFile();
+            List<Line> lines = prims.OfType<Line>().ToList();
             //Create clipper object
             Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
             

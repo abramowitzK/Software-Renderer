@@ -17,16 +17,14 @@ namespace GraphicsHW.Math
         public Matrix2()
         {
             m_data = new Vector2<T>[2];
+            m_data[0] = new Vector2<T>();
+            m_data[1] = new Vector2<T>();
         }
         public Matrix2(T x1, T y1, T x2, T y2)
         {
             m_data = new Vector2<T>[2];
-            m_data[0] = new Vector2<T>();
-            m_data[1] = new Vector2<T>();
-            m_data[0][0] = x1;
-            m_data[0][1] = y1;
-            m_data[1][0] = x2;
-            m_data[1][1] = y2;
+            m_data[0] = new Vector2<T>(x1, y1);
+            m_data[1] = new Vector2<T>(x2, y2);
         }
         public Vector2<T> Multiply(Vector2<T> vec) 
         {

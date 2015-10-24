@@ -9,7 +9,7 @@
     }
     public enum PrimitiveType
     {
-        Point,
-        Line
+        Line,
+        Polygon
     }
 }
