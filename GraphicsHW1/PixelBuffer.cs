@@ -141,6 +141,14 @@ namespace GraphicsHW.Util
                     WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
             }
         }
+        public void DrawPolygons(List<Polygon2D> polygons)
+        {
+            foreach (Polygon2D p in polygons)
+            {
+                List<Line2D> lines = p.GetLines();
+                ScanConvertLines(lines);
+            }
+        }
         private double CalcSlope(Line2D line)
         {
             double rise = line.End[1] - line.Start[1];

@@ -39,6 +39,7 @@ namespace GraphicsHW
             //Draw lines
             PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
             pb.ScanConvertLines(lines);
+            pb.DrawPolygons(polygons);
             //Write to console
             Console.Write(pb.WriteToXPM());
         }

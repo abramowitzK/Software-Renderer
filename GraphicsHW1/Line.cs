@@ -32,6 +32,11 @@ namespace GraphicsHW.Primitives
             this.Start = new Vector3<double>();
             this.End = new Vector3<double>();
         }
+        public Line2D(Vector3<double> start, Vector3<double> end)
+        {
+            this.Start = start;
+            this.End = end;
+        }
         public static Line2D ParseLine(string lineText)
         {
             string[] splitLine = lineText.Split(' ');

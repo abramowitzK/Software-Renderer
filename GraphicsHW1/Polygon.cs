@@ -39,6 +39,18 @@ namespace GraphicsHW.Primitives
         {
             m_vertices.Add(vertex);
         }
+        public List<Line2D> GetLines()
+        {
+            List<Line2D> lines = new List<Line2D>();
+            for (int i = 0; i < this.Count(); i++)
+            {
+                if ((i + 1) < this.Count())
+                    lines.Add(new Line2D(m_vertices[i], m_vertices[i + 1]));
+                else
+                    lines.Add(new Line2D(m_vertices[i], m_vertices.First()));
+            }
+            return lines;
+        }
         public static Vector3<double> ParseVertex(string input)
         {
             string[] split = input.Split(' ');
