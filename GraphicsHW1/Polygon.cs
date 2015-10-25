@@ -31,6 +31,11 @@ namespace GraphicsHW.Primitives
             m_vertices.Add(start);
         }
 
+        public Polygon2D(List<Vector3<double>> vertices)
+        {
+            m_vertices = vertices;
+        }
+
         public void Transform(double xScale, double yScale, double theta, int xTranslation, int yTranslation)
         {
             Matrix3<double> mat = Trans2D.GetCombinedMatrix(xScale, yScale, theta, xTranslation, yTranslation);
@@ -49,7 +54,7 @@ namespace GraphicsHW.Primitives
         {
             m_vertices.Add(vertex);
         }
-
+        //returns lines in counterclockwise order
         public List<Line2D> GetLines()
         {
             List<Line2D> lines = new List<Line2D>();

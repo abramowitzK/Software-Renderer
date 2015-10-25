@@ -19,6 +19,8 @@ namespace GraphicsHW
             //Read the input file specified in the arguments
             PostscriptReader rdr = new PostscriptReader(a.InputFile);
             List<Primitive> prims = rdr.ReadFile();
+            //These are extension methods that make life super easy (why I chose C#).
+            //List manipulation is a breeze and it's typesafe with runtime generics
             List<Line2D> lines = prims.OfType<Line2D>().ToList();
             List<Polygon2D> polygons = prims.OfType<Polygon2D>().ToList();
             //Create clipper object
@@ -36,10 +38,15 @@ namespace GraphicsHW
             }
             //Clip lines
             lines = c.ClipLines(lines);
+            //Clip polygons
+            polygons = c.ClipPolygons(polygons);
             //Draw lines
             PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
-            pb.ScanConvertLines(lines);
-            pb.DrawPolygons(polygons);
+            if(lines.Count >= 1)
+                pb.ScanConvertLines(lines);
+            //Draw polygons if there are any to draw
+            if(polygons.Count >= 1)
+                pb.DrawPolygons(polygons);
             //Write to console
             Console.Write(pb.WriteToXPM());
         }

@@ -43,7 +43,7 @@ namespace GraphicsHW
                     {
                         //Begin polygon
                         polygonIndex = returnList.Count;
-                        returnList.Add(new Polygon2D(Polygon2D.ParseVertex(line)));
+                        returnList.Add(new Polygon2D());
 
                     }
                     else if (line.EndsWith("lineto"))

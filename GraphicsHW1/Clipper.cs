@@ -15,13 +15,19 @@ namespace GraphicsHW.Util
         private double m_xMax;
         private double m_yMin;
         private double m_yMax;
-
+        private Polygon2D m_clipPoly;
         public Clipper(int xmin, int xmax, int ymin, int ymax)
         {
             m_xMin = xmin;
             m_xMax = xmax;
             m_yMin = ymin;
             m_yMax = ymax;
+            m_clipPoly = new Polygon2D(m_xMin, m_yMin);
+            //Need to add vertices in clockwise order
+            m_clipPoly.AddVertex(new Vector3<double>(m_xMax, m_yMin, 1));
+            m_clipPoly.AddVertex(new Vector3<double>(m_xMax, m_yMax, 1));
+            m_clipPoly.AddVertex(new Vector3<double>(m_xMin, m_yMax, 1));
+
         }
         #region LineClipping
         // Returns a list of clipped lines to draw. Some input lines may be discarded if entirely out of drawing area.
@@ -163,6 +169,8 @@ namespace GraphicsHW.Util
         }
         #endregion
         #region PolygonClipping
+        //Public interface to be called by main program. This will clip a list of arbitrary polygons against the clipping
+        //polygon
         public List<Polygon2D> ClipPolygons(List<Polygon2D> polygons)
         {
             List<Polygon2D> newList = new List<Polygon2D>();
@@ -176,23 +184,95 @@ namespace GraphicsHW.Util
             }
             return newList;
         }
+        // Clips a single polygon and returns the clipped polygon as a new instance
         private Polygon2D ClipPolygon(Polygon2D polygon)
         {
-            List<Vector3<double>> output = new List<Vector3<double>>();
             var vertices = polygon.GetVertices();
 
-            for (int i = 0; i < vertices.Count; i++)
+            foreach (var line in m_clipPoly.GetLines())
             {
-
+                vertices = SutherlandHodgman(vertices, line);
+                //We clipped all our vertices and got nothing back, meaning nothing will be displayed.
+                //Just return nothing
+                if (vertices.Count == 0)
+                    return null;
             }
-            return new Polygon2D();
+            if (vertices.Count > 3)
+                return new Polygon2D(vertices);
+            else
+                return null;
         }
-        private bool IsInside(Vector3<double> vertex)
+        //Functions that are commented "Based on textbook algorithm" were inspired by ntroduction to Computer Graphics(Foley, Van Dam, et al)
+        //All these functions rely on the polygon being specified in counterclockwise vertex ordering.
+        //Based on textbook algorithm
+        // Calculates the intersection of the line formed by two vertices and a line. 
+        private Vector3<double> Intersect(Vector3<double> begin, Vector3<double> end, Line2D clipEdge)
         {
-            if (vertex.X > m_xMax || vertex.X < m_yMin || vertex.Y > m_yMax || vertex.Y < m_yMin)
-                return false;
-            return true;
+            Vector3<double> ret = new Vector3<double>();
+            if (clipEdge.Start.Y == clipEdge.End.Y)
+            {
+                ret.X = begin.X + (clipEdge.Start.Y - begin.Y) * (end.X - begin.X) / (end.Y - begin.Y);
+                ret.Y = clipEdge.Start.Y;
+            }
+            else
+            {
+                ret.X = clipEdge.Start.X;
+                ret.Y = begin.Y + (clipEdge.Start.X - begin.X) * (end.Y - begin.Y) / (end.X - begin.X);
+            }
+            return ret;
         }
+        //Based on textbook algorithm
+        //Determines if a point is inside a given line (inside defined as being to the left of the clipEdge while oriented in the direction of the clip edge)
+        private bool Inside(Vector3<double> test, Line2D clipEdge)
+        {
+            if (clipEdge.End.X > clipEdge.Start.X)
+                if (test.Y >= clipEdge.Start.Y)
+                    return true;
+            if (clipEdge.End.X < clipEdge.Start.X)
+                if (test.Y <= clipEdge.Start.Y)
+                    return true;
+            if (clipEdge.End.Y > clipEdge.Start.Y)
+                if (test.X <= clipEdge.End.X)
+                    return true;
+            if (clipEdge.End.Y < clipEdge.Start.Y)
+                if (test.X >= clipEdge.End.X)
+                    return true;
+            return false;
+        }
+        //Based on textbook algorithm
+        //Implements the sutherlandHodgman polygon clipping algorithm. This function will only
+        //clip the polygon against one clip edge at a time. Therefore, to clip the entire polygon, we feed the output
+        //of this command into the input of another call to this with a different clip edge and keep
+        // doing this until we run out of clip edges 
+        private List<Vector3<double>> SutherlandHodgman(List<Vector3<double>> inVertices, Line2D clipEdge)
+        {
+            List<Vector3<double>> output = new List<Vector3<double>>();
+            Vector3<double> s = inVertices.Last();
+            Vector3<double> p;
+            for(int i = 0; i < inVertices.Count; i++)
+            {
+                p = inVertices[i];
+                if (Inside(p, clipEdge))
+                {
+                    if (Inside(s, clipEdge))
+                    {
+                        output.Add(p);
+                    }
+                    else
+                    {
+                        output.Add(Intersect(s, p, clipEdge));
+                        output.Add(p);
+                    }
+                }
+                else if(Inside(s, clipEdge))
+                {
+                    output.Add(Intersect(s, p, clipEdge));
+                }
+                s = p;
+            }
+            return output;
+        }
+
         #endregion
     }
 }
