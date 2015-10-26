@@ -47,9 +47,10 @@ namespace GraphicsHW.Util
                 }
                 sb.Append(@""",");
             }
-            sb.Append("}");
             //Remove that extra comma, even though it doesn't seem to be a problem
             sb.Remove(sb.Length - 1, 1);
+            sb.Append("}");
+
             return sb.ToString();
         }
         //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
