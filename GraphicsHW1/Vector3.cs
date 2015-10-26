@@ -85,5 +85,9 @@ namespace GraphicsHW.Math
             }
             return false;
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
