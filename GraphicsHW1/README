@@ -6,13 +6,12 @@ make build to build
 
 This program, given a postscript file containing lines, will output an xpm file to stdout containing the clipped and transformed lines (controlled by
 user input).
-
+This program will now also allow polygons to be entered by using moveto, lineto and stroke. It can also perform transformations and clipping on these.
 Language : C#
 Developed on windows for .NET 4. Runs on Linux with Mono v3.x 
 
 File containing main: Driver.cs
 
-I haven't implemented the transformations using homogenous coordinates yet but they will be implemented next assignment. I ran into a lot of wierd
-little bugs that needed to be fixed and it took a alot of time. I ran through all the test cases given in the assignment and the outputs look good
+I ran through all the test cases given in the assignment and the outputs look good
 finally. I tried to comment anything that might be confusing if you haven't used C# before. This is running on the Mono runtime on tux but it will
 also run on .NET 4 or greater on windows just fine. There's an sln file if you want to open this with visual studio on windows.
