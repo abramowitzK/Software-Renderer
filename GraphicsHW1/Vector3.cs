@@ -75,5 +75,15 @@ namespace GraphicsHW.Math
             sb.Append(")");
             return sb.ToString();
         }
+        public override bool Equals(object obj)
+        {
+            Vector3<T> test = obj as Vector3<T>;
+            if (test != null)
+            {
+                if ((dynamic)test.X == this.X && (dynamic)test.Y == this.Y && (dynamic)test.Z == this.Z)
+                    return true;
+            }
+            return false;
+        }
     }
 }

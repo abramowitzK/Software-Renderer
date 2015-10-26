@@ -43,13 +43,14 @@ namespace GraphicsHW
                     {
                         //Begin polygon
                         polygonIndex = returnList.Count;
-                        returnList.Add(new Polygon2D());
+                        returnList.Add(new Polygon2D(Polygon2D.ParseVertex(line)));
 
                     }
                     else if (line.EndsWith("lineto"))
                     {
-                        (returnList[polygonIndex] as Polygon2D).AddVertex(Polygon2D.ParseVertex(line));
                         //Drawing polygon
+                        if (!Polygon2D.ParseVertex(line).Equals((returnList[polygonIndex] as Polygon2D).First()))
+                            (returnList[polygonIndex] as Polygon2D).AddVertex(Polygon2D.ParseVertex(line));     
                     }
                     else if (line.EndsWith("stroke"))
                     {

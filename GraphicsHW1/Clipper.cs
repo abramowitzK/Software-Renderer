@@ -197,10 +197,7 @@ namespace GraphicsHW.Util
                 if (vertices.Count == 0)
                     return null;
             }
-            if (vertices.Count > 3)
-                return new Polygon2D(vertices);
-            else
-                return null;
+            return new Polygon2D(vertices);
         }
         //Functions that are commented "Based on textbook algorithm" were inspired by ntroduction to Computer Graphics(Foley, Van Dam, et al)
         //All these functions rely on the polygon being specified in counterclockwise vertex ordering.
