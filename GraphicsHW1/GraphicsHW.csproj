@@ -75,6 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="hw2_a.ps" />
+    <None Include="hw2_b.ps" />
+    <None Include="hw2_c.ps" />
+    <None Include="hw2_d.ps" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
