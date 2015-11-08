@@ -16,8 +16,8 @@ namespace GraphicsHW.Util
         private int m_width;
         private int m_height;
         private int m_ymax;
-        private int m_ymin;
-        private int m_xmin;
+        //private int m_ymin;
+        //private int m_xmin;
         private int m_xmax;
 
         public static Matrix3<double> GetVPMatrix(double xmin, double xmax, double ymin, double ymax, double vpxmin, double vpxmax, double vpymin, double vpymax)
