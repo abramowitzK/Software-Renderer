@@ -12,6 +12,16 @@ Developed on windows for .NET 4. Runs on Linux with Mono v3.x
 
 File containing main: Driver.cs
 
-I ran through all the test cases given in the assignment and the outputs look good
-finally. I tried to comment anything that might be confusing if you haven't used C# before. This is running on the Mono runtime on tux but it will
+Viewport mapping : works well.
+Old features : works well.
+
+Polygon filling. Mostly works, however there is an issue with rounding that I wasn't able to track down (spent a ton of time trying to fix)
+that is causing points on and near corners to not be intersected. The drawing part works perfectly but the intersection is being affected by rounding badly. 
+If a scan line goes through a corner, it will properly detect if one of the lines is at its YMax but then it won't detect the intersection with the other 
+line that makes up the corner even if it should (the t value is very close to 1 but a little above) and messing with the t threshold gave odd results.
+
+I think I might just have to come up with a better intersection algorithm. I used the one from the slides but it doesn't play nice with my numbers for
+some reason...
+
+I tried to comment anything that might be confusing if you haven't used C# before. This is running on the Mono runtime on tux but it will
 also run on .NET 4 or greater on windows just fine. There's an sln file if you want to open this with visual studio on windows.
