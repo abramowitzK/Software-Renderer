@@ -31,9 +31,9 @@ namespace GraphicsHW.Util
         public PixelBuffer(int xmin, int xmax, int ymin, int ymax, double vpxmin, double vpxmax, double vpymin, double vpymax)
         {
 
-            m_ymin = ymin;
+            //m_ymin = ymin;
             m_ymax = ymax;
-            m_xmin = xmin;
+            //m_xmin = xmin;
             m_xmax = xmax;
             m_height = 501;
             m_width = 501;
