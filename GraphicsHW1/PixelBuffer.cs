@@ -19,10 +19,6 @@ namespace GraphicsHW.Util
         private int m_ymin;
         private int m_xmin;
         private int m_xmax;
-        private double m_vpymax;
-        private double m_vpymin;
-        private double m_vpxmin;
-        private double m_vpxmax;
 
         public static Matrix3<double> GetVPMatrix(double xmin, double xmax, double ymin, double ymax, double vpxmin, double vpxmax, double vpymin, double vpymax)
         {
@@ -39,10 +35,6 @@ namespace GraphicsHW.Util
             m_ymax = ymax;
             m_xmin = xmin;
             m_xmax = xmax;
-            m_vpymax = vpymax;
-            m_vpymin = vpymin;
-            m_vpxmin = vpxmin;
-            m_vpxmax = vpxmax;
             m_height = 501;
             m_width = 501;
             m_pixelArray = new bool[502, 502];
@@ -74,8 +66,6 @@ namespace GraphicsHW.Util
         //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
         public void WritePixel(int i, int j, bool isBlack)
         {
-            int i_final = i - m_xmin;
-            int j_final = m_height - j + m_ymin - 1;
             m_pixelArray[i,m_height - j] = isBlack;
         }
         public void ScanConvertLines(List<Line2D> lines)
