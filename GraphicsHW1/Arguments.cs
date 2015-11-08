@@ -23,10 +23,42 @@ namespace GraphicsHW.Util
             this["-n"] = 0;
             this["-a"] = 0;
             this["-b"] = 0;
-            this["-c"] = 499;
-            this["-d"] = 499;
+            this["-c"] = 500;
+            this["-d"] = 500;
+            this["-j"] = 0.0;
+            this["-k"] = 0.0;
+            this["-o"] = 200.0;
+            this["-p"] = 200.0;
             m_rawInput = args;
             Parse();  
+        }
+        public double VP_XLower
+        {
+            get
+            {
+                return Convert.ToDouble(this["-j"]);
+            }
+        }
+        public double VP_YLower
+        {
+            get
+            {
+                return Convert.ToDouble(this["-k"]);
+            }
+        }
+        public double VP_XUpper
+        {
+            get
+            {
+                return Convert.ToDouble(this["-o"]);
+            }
+        }
+        public double VP_YUpper
+        {
+            get
+            {
+                return Convert.ToDouble(this["-p"]);
+            }
         }
         public string InputFile
         {
@@ -141,6 +173,26 @@ namespace GraphicsHW.Util
                     case "-d":
                         {
                             this["-d"] = m_rawInput[i + 1];
+                            break;
+                        }
+                    case "-j":
+                        {
+                            this["-j"] = m_rawInput[i + 1];
+                            break;
+                        }
+                    case "-k":
+                        {
+                            this["-k"] = m_rawInput[i + 1];
+                            break;
+                        }
+                    case "-o":
+                        {
+                            this["-o"] = m_rawInput[i + 1];
+                            break;
+                        }
+                    case "-p":
+                        {
+                            this["-p"] = m_rawInput[i + 1];
                             break;
                         }
                     default:

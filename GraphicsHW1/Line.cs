@@ -77,9 +77,41 @@ namespace GraphicsHW.Primitives
             Start = combined * Start;
             End = combined * End;
         }
+        public void MapToViewPort(Matrix3<double> vpMatrix)
+        {
+            Start = vpMatrix * Start;
+            End = vpMatrix * End;
+        }
         public override string ToString()
         {
             return Start[0] + " " + Start[1] + " " + End[0] + " " + End[1] + " Line";
+        }
+        public double Slope
+        {
+            get
+            {
+                double rise = End[1] - Start[1];
+                double run = End[0] - Start[0];
+                return (rise / run);
+            }
+        }
+        public int MaxY
+        {
+            get
+            {
+                if (Start.Y > End.Y)
+                    return (int)System.Math.Round(Start.Y, MidpointRounding.AwayFromZero);
+                return (int)System.Math.Round(End.Y, MidpointRounding.AwayFromZero);
+            }
+        }
+        public int MaxX
+        {
+            get
+            {
+                if (Start.X > End.X)
+                    return (int)System.Math.Round(Start.X, MidpointRounding.AwayFromZero);
+                return (int)System.Math.Round(End.X, MidpointRounding.AwayFromZero);
+            }
         }
 
     }

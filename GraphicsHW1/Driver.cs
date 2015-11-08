@@ -24,7 +24,7 @@ namespace GraphicsHW
             List<Line2D> lines = prims.OfType<Line2D>().ToList();
             List<Polygon2D> polygons = prims.OfType<Polygon2D>().ToList();
             //Create clipper object
-            Clipper c = new Clipper(a.XLower, a.XUpper, a.YLower, a.YUpper);
+            Clipper c = new Clipper((int)a.VP_XLower, (int)a.VP_XUpper, (int)a.VP_YLower, (int)a.VP_YUpper);
             
             //Transform all our endpoints
             foreach (Line2D i in lines)
@@ -36,15 +36,31 @@ namespace GraphicsHW
             {
                 i.Transform(a.Scale, a.Scale, a.Rotation, a.XTranslation, a.YTranslation);
             }
+
+            foreach (Line2D i in lines)
+            {
+                i.MapToViewPort(PixelBuffer.GetVPMatrix(a.XLower, a.XUpper, a.YLower, a.YUpper, a.VP_XLower, a.VP_XUpper, a.VP_YLower, a.VP_YUpper));
+            }
+            foreach (Polygon2D i in polygons)
+            {
+                i.MapToViewPort(PixelBuffer.GetVPMatrix(a.XLower, a.XUpper, a.YLower, a.YUpper, a.VP_XLower, a.VP_XUpper, a.VP_YLower, a.VP_YUpper));
+            }
             //Clip lines
             lines = c.ClipLines(lines);
             //Clip polygons
             polygons = c.ClipPolygons(polygons);
             //Draw lines
-            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper);
+            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper, a.VP_XLower, a.VP_XUpper, a.VP_YLower, a.VP_YUpper);
             if(lines.Count >= 1)
                 pb.ScanConvertLines(lines);
             //Draw polygons if there are any to draw
+            foreach (var p in polygons)
+            {
+                foreach (var v in p)
+                {
+                    v.Round();
+                }
+            }
             if(polygons.Count >= 1)
                 pb.DrawPolygons(polygons);
             //Write to console

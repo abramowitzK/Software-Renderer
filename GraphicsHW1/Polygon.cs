@@ -13,6 +13,7 @@ namespace GraphicsHW.Primitives
     {
         //List of vertices stored in homogenous coordinates in counterclockwise order
         private List<Vector3<double>> m_vertices;
+        private List<Line2D> m_fillLines;
 
         public Polygon2D()
         {
@@ -45,11 +46,37 @@ namespace GraphicsHW.Primitives
             }
         }
 
+        public void MapToViewPort(Matrix3<double> vpMatrix)
+        {
+            for (int i = 0; i < this.Count(); i++)
+            {
+                m_vertices[i] = vpMatrix * m_vertices[i];
+            }
+        }
+
         public List<Vector3<double>> GetVertices()
         {
             return m_vertices;
         }
-
+        public void Convert(int xmin, int xmax, int ymin, int ymax)
+        {
+            foreach (var v in this)
+            {
+                v.X = v.X - xmin;
+                v.Y = (ymax - ymin) - v.Y + ymin - 1;
+            }
+        }
+        //Scan lines for filling
+        public List<Line2D> FillLines
+        {
+            get
+            {
+                if (null == m_fillLines)
+                    m_fillLines = new List<Line2D>();
+                return m_fillLines;
+            }
+            set { m_fillLines = value; }
+        }
         public void AddVertex(Vector3<double> vertex)
         {
             m_vertices.Add(vertex);
@@ -71,9 +98,10 @@ namespace GraphicsHW.Primitives
         public static Vector3<double> ParseVertex(string input)
         {
             string[] split = input.Split(' ');
+            split = split.Where(i => !String.IsNullOrEmpty(i) || !String.IsNullOrWhiteSpace(i)).ToArray();
             return new Vector3<double>(double.Parse(split[0]), double.Parse(split[1]), 1.0);
         }
-
+        #region IEnumerable
         public override PrimitiveType Type
         {
             get
@@ -92,7 +120,10 @@ namespace GraphicsHW.Primitives
         {
             return GetEnumerator();
         }
+        #endregion
     }
+
+
 
     public class PolygonEnumerator : IEnumerator<Vector3<double>>
     {

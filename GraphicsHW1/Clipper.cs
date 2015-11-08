@@ -197,6 +197,7 @@ namespace GraphicsHW.Util
                 if (vertices.Count == 0)
                     return null;
             }
+            vertices.ForEach(v => v.Round());
             return new Polygon2D(vertices);
         }
         //Functions that are commented "Based on textbook algorithm" were inspired by ntroduction to Computer Graphics(Foley, Van Dam, et al)

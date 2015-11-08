@@ -63,6 +63,20 @@ namespace GraphicsHW.Math
                 m_data[2] = value;
             }
         }
+        public static Vector3<T> operator -(Vector3<T> vec1, Vector3<T> vec2)
+        {
+            return new Vector3<T>((dynamic)vec1.X - vec2.X, (dynamic)vec1.Y - vec2.Y, (dynamic)1.0);
+        }
+        public static Vector3<T> operator +(Vector3<T> vec1, Vector3<T> vec2)
+        {
+            return new Vector3<T>((dynamic)vec1.X + vec2.X, (dynamic)vec1.Y + vec2.Y, (dynamic)1.0);
+        }
+        public static Vector3<T> operator *(double t, Vector3<T> vec1)
+        {
+            vec1.X = (dynamic)vec1.X * t;
+            vec1.Y = (dynamic)vec1.Y * t;
+            return vec1;
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -88,6 +102,11 @@ namespace GraphicsHW.Math
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+        public void Round()
+        {
+            X = System.Math.Round((dynamic)X, MidpointRounding.AwayFromZero);
+            Y = System.Math.Round((dynamic)Y, MidpointRounding.AwayFromZero);
         }
     }
 }

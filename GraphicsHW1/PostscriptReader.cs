@@ -59,7 +59,7 @@ namespace GraphicsHW
                     }
                     else
                     {
-                        Console.WriteLine("WARNING! Line number " + LineNumber + " contains invalid data. Skipping...");
+                        //Console.WriteLine("WARNING! Line number " + LineNumber + " contains invalid data. Skipping...");
                         continue; //We don't know what this is. Skip to prevent critical failure and output warning to console;
                     }
                 }
