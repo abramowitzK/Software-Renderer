@@ -10,6 +10,8 @@
     public enum PrimitiveType
     {
         Line2D,
-        Polygon
+        Line3D,
+        Polygon,
+        Polygon3D
     }
 }

@@ -66,7 +66,8 @@ namespace GraphicsHW.Util
         //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
         public void WritePixel(int i, int j, bool isBlack)
         {
-            m_pixelArray[i,m_height - j] = isBlack;
+            if(i > 0 && i < m_width - 1 && j > 0 && j < m_height -1)
+                m_pixelArray[i,m_height - j] = isBlack;
         }
         public void ScanConvertLines(List<Line2D> lines)
         {
@@ -150,6 +151,88 @@ namespace GraphicsHW.Util
                     WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
             }
         }
+        public void ScanConvertLines(List<Line3D> lines)
+        {
+            double deltaX;
+            double deltaY;
+            //Need to check for vertical line...
+            //var is like auto in c++11
+            foreach (var line in lines)
+            {
+                int steps = 0;
+                double currentX = 0f;
+                double currentY = 0f;
+                double slope = CalcSlope(line);
+                bool startedAtEnd = false;
+                if (double.IsInfinity(slope))
+                {
+                    deltaX = 0;
+                    if (line.Start[1] > line.End[1])
+                    {
+                        startedAtEnd = true;
+                        currentX = line.End[0];
+                        currentY = line.End[1];
+                    }
+                    else
+                    {
+                        currentX = line.Start[0];
+                        currentY = line.Start[1];
+                    }
+                    deltaY = 1f;
+                    steps = (int)System.Math.Abs((line.Start[1] - line.End[1]));
+                }
+                else if (System.Math.Abs(slope) < 1f) //Forgetting to do absolute value is what caused the skips in the line...
+                {
+                    deltaX = 1f;
+                    deltaY = slope;
+                    steps = (int)System.Math.Abs((line.Start[0] - line.End[0]));
+                    if (line.Start[0] > line.End[0])
+                    {
+                        startedAtEnd = true;
+                        currentX = line.End[0];
+                        currentY = line.End[1];
+                    }
+                    else
+                    {
+                        currentX = line.Start[0];
+                        currentY = line.Start[1];
+                    }
+                }
+                else
+                {
+                    deltaY = 1f;
+                    deltaX = 1 / slope;
+                    steps = (int)System.Math.Abs((line.Start[1] - line.End[1]));
+                    if (line.Start[1] > line.End[1])
+                    {
+                        startedAtEnd = true;
+                        currentX = line.End[0];
+                        currentY = line.End[1];
+                    }
+                    else
+                    {
+                        currentX = line.Start[0];
+                        currentY = line.Start[1];
+                    }
+                }
+                // Starting pixel
+                WritePixel((int)System.Math.Round(currentX), (int)System.Math.Round(currentY), true);
+                for (int i = 0; i < steps; i++)
+                {
+                    currentX += deltaX;
+                    currentY += deltaY;
+                    if ((currentX > m_xmax) || (currentY > m_ymax))
+                        break;
+                    if ((currentX < 0) || (currentY < 0))
+                        break;
+                    WritePixel((int)System.Math.Round(currentX, MidpointRounding.AwayFromZero), (int)System.Math.Round(currentY, MidpointRounding.AwayFromZero), true);
+                }
+                if (startedAtEnd)
+                    WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
+                else
+                    WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
+            }
+        }
         public void DrawPolygons(List<Polygon2D> polygons)
         {
             foreach (Polygon2D p in polygons)
@@ -157,6 +240,14 @@ namespace GraphicsHW.Util
                 List<Line2D> lines = p.GetLines();
                 ScanConvertLines(lines);
                FillPolygon(p);
+            }
+        }
+        public void DrawPolygon3D(List<Polygon3D> polygons)
+        {
+            foreach (var p in polygons)
+            {
+                List<Line3D> lines = p.GetLines();
+                ScanConvertLines(lines);
             }
         }
         public void FillPolygon(Polygon2D p)
@@ -253,6 +344,12 @@ namespace GraphicsHW.Util
             }
         }
         private double CalcSlope(Line2D line)
+        {
+            double rise = line.End[1] - line.Start[1];
+            double run = line.End[0] - line.Start[0];
+            return (rise / run);
+        }
+        private double CalcSlope(Line3D line)
         {
             double rise = line.End[1] - line.Start[1];
             double run = line.End[0] - line.Start[0];

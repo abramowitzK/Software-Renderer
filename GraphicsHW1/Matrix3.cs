@@ -64,6 +64,13 @@ namespace GraphicsHW.Math
             double z = 1.0;
             return new Vector3<double>(x, y, z);
         }
+        public static Vector4<double> operator *(Matrix3<T> mat, Vector4<double> vec)
+        {
+            double x = (dynamic)mat[0][0] * vec.X + (dynamic)mat[0][1] * vec.Y + (dynamic)mat[0][2] * vec.Z;
+            double y = (dynamic)mat[1][0] * vec.X + (dynamic)mat[1][1] * vec.Y + (dynamic)mat[1][2] * vec.Z;
+            double z = (dynamic)mat[2][0] * vec.X + (dynamic)mat[2][1] * vec.Y + (dynamic)mat[2][2] * vec.Z;
+            return new Vector4<double>(x, y, z, 1.0);
+        }
         public override string ToString()
         {
             return this[0].ToString() + "\n" + this[1].ToString() + "\n" + this[2].ToString();
