@@ -70,7 +70,7 @@ namespace GraphicsHW
                 p.ProjectAndView(projection);
             }
             List<Polygon3D> acceptedPolys = new List<Polygon3D>();
-            //Clip polygons
+            //Clip polygons -- this doesn't work
             foreach (var p in prims)
             {
                 bool accept = false;
