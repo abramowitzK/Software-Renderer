@@ -8,14 +8,28 @@ using GraphicsHW.Math;
 
 namespace GraphicsHW.Util
 {
+    public struct Pixel
+    {
+        public double z;
+        public string color;
+        public string colorChar;
+        public bool draw;
+    }
     //Stores the framebuffer and contains the drawing routines as well as the xpm writing routines
     public class PixelBuffer
     {
         //This declares a multidimensional array. Size specified at object instantiation
-        private bool[,] m_pixelArray;
+        private Pixel[,] m_pixelArray;
+        private double[,] m_depthBuffer;
         private int m_width;
         private int m_height;
         private int m_ymax;
+        private int[] baseColors;
+        private int[] reds;
+        private int[] blues;
+        private int[] greens;
+        private double zfar;
+        private double znear;
         //private int m_ymin;
         //private int m_xmin;
         private int m_xmax;
@@ -28,7 +42,7 @@ namespace GraphicsHW.Util
             Matrix3<double> T_xy = Trans2D.GetTranslationMatrix(-xmin, -ymin);
             return T_uv *S * T_xy;
         }
-        public PixelBuffer(int xmin, int xmax, int ymin, int ymax, double vpxmin, double vpxmax, double vpymin, double vpymax)
+        public PixelBuffer(int xmin, int xmax, int ymin, int ymax, double vpxmin, double vpxmax, double vpymin, double vpymax, double zfar, double znear)
         {
 
             //m_ymin = ymin;
@@ -37,20 +51,36 @@ namespace GraphicsHW.Util
             m_xmax = xmax;
             m_height = 501;
             m_width = 501;
-            m_pixelArray = new bool[502, 502];
+            m_pixelArray = new Pixel[502, 502];
+            m_depthBuffer = new double[502, 502];
+            baseColors = new int[3];
+            baseColors[0] = 0xff0000;
+            baseColors[1] = 0x00ff00;
+            baseColors[2] = 0x0000ff;
+            reds = new int[16];
+            blues = new int[16];
+            greens = new int[16];
+            for (int i = 0; i < 16; i++)
+            {
+                reds[i] = baseColors[0] - i * 0x110000;
+                blues[i] = baseColors[1] - i * 0x001100;
+                greens[i] = baseColors[2] - i * 0x000011;
+            }
+            this.zfar = zfar;
+            this.znear = znear;
             
         }
         public string WriteToXPM()
         {
             // Use string builder since strings are immutable in C# and are really slow to concatenate with + operator in a tight loop
-            string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #ffffff"", ""@ c #000000"" /*pixels*/""";
+            string xpm = @"/* XPM */ static char* sco100[] = { /* width height num_colors chars_per_pixel */""" + m_width + " " + m_height + @" 2 1"", /*colors*/ ""- c #000000"", ""@ c #ff0000"" /*pixels*/""";
             StringBuilder sb = new StringBuilder(xpm);
             for (int i = 0; i < m_pixelArray.GetLength(1); i++)
             {
                 sb.Append(@"""");
                 for (int j = 0; j < m_pixelArray.GetLength(0); j++)
                 {
-                    if (m_pixelArray[j, i])
+                    if (m_pixelArray[j, i].draw)
                         sb.Append("@");
                     else
                         sb.Append("-");
@@ -64,10 +94,20 @@ namespace GraphicsHW.Util
             return sb.ToString();
         }
         //Write pixel at specified location. Have to transform the y coordinate so origin is in bottom left
+        public void WritePixel(int i, int j, bool isBlack, int objectNumber)
+        {
+            if (i > 0 && i < m_width - 1 && j > 0 && j < m_height - 1)
+            {
+                m_pixelArray[i, m_height - j].draw = isBlack;
+                m_pixelArray[i, m_height - j].color = baseColors[objectNumber].ToString("X6");
+            }
+        }
         public void WritePixel(int i, int j, bool isBlack)
         {
-            if(i > 0 && i < m_width - 1 && j > 0 && j < m_height -1)
-                m_pixelArray[i,m_height - j] = isBlack;
+            if (i > 0 && i < m_width - 1 && j > 0 && j < m_height - 1)
+            {
+                m_pixelArray[i, m_height - j].draw = isBlack;
+            }
         }
         public void ScanConvertLines(List<Line2D> lines)
         {
@@ -233,11 +273,11 @@ namespace GraphicsHW.Util
                     WritePixel((int)System.Math.Round(line.End[0], MidpointRounding.AwayFromZero), (int)System.Math.Round(line.End[1], MidpointRounding.AwayFromZero), true);
             }
         }
-        public void DrawPolygons(List<Polygon2D> polygons)
+        public void DrawPolygons(List<Polygon3D> polygons)
         {
-            foreach (Polygon2D p in polygons)
+            foreach (Polygon3D p in polygons)
             {
-                List<Line2D> lines = p.GetLines();
+                List<Line3D> lines = p.GetLines();
                 ScanConvertLines(lines);
                FillPolygon(p);
             }
@@ -250,7 +290,7 @@ namespace GraphicsHW.Util
                 ScanConvertLines(lines);
             }
         }
-        public void FillPolygon(Polygon2D p)
+        public void FillPolygon(Polygon3D p)
         {
             //Tried using fill lines and storing them in the polygon. Had issues with concave polygons where it would draw outside of them because I didn't
             //have mechanism like the parity bit flip. This is attempt two....
@@ -260,13 +300,13 @@ namespace GraphicsHW.Util
             int highestX = (int)(p.OrderByDescending(i => i.X).First().X);
             while (Y >= lowestY)
             {
-                List<Vector3<double>> Intersections = new List<Vector3<double>>();
+                List<Vector4<double>> Intersections = new List<Vector4<double>>();
                 
-                List<Line2D> lines = p.GetLines();
+                List<Line3D> lines = p.GetLines();
                 for(int i = 0; i < lines.Count; i++)
                 {
-                    Line2D scanLine = new Line2D(new Vector3<double>(lowestX, Y, 1), new Vector3<double>(highestX, Y, 1));
-                    Vector3<double> intPoint = Intersect(scanLine, lines[i]);
+                    Line3D scanLine = new Line3D(new Vector4<double>(lowestX, Y, 1, 1), new Vector4<double>(highestX, Y, 1, 1));
+                    Vector4<double> intPoint = Intersect(scanLine, lines[i]);
                     if (null != intPoint) // they interesected
                     {
                         if ((int)System.Math.Round(intPoint.Y) != lines[i].MaxY)
@@ -305,7 +345,7 @@ namespace GraphicsHW.Util
         }
         //Polygon intersection
         //Intersection between two lines
-        private Vector3<double> Intersect(Line2D scanLine, Line2D intersectionLine)
+        private Vector4<double> Intersect(Line3D scanLine, Line3D intersectionLine)
         {
             var p0 = scanLine.End;
             var p1 = scanLine.Start;

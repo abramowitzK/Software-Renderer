@@ -16,7 +16,9 @@ namespace GraphicsHW.Util
         public Arguments(string[] args)
         {
             //Setting default values in case the user doesn't input a parameter
-            this["-f"] = "hw1.ps";
+            this["-f"] = "bound-sprellpsd.smf";
+            this["-g"] = null;
+            this["-i"] = null;
             this["-s"] = 1.0;
             this["-r"] = 0.0;
             this["-m"] = 0;
@@ -46,6 +48,8 @@ namespace GraphicsHW.Util
             this["-U"] = 0.7;
             this["-V"] = 0.7;
             this["-P"] = false;
+            this["-F"] = 0.6;
+            this["-B"] = -0.6;
             m_rawInput = args;
             Parse();  
         }
@@ -77,7 +81,7 @@ namespace GraphicsHW.Util
                 return Convert.ToDouble(this["-p"]);
             }
         }
-        public string InputFile
+        public string FirstModel
         {
             get
             {
@@ -258,6 +262,34 @@ namespace GraphicsHW.Util
             get
             {
                 return Convert.ToBoolean(this["-P"]);
+            }
+        }
+        public double FrontPlaneVRC
+        {
+            get
+            {
+                return Convert.ToDouble(this["-F"]);
+            }
+        }
+        public double BackPlaneVRC
+        {
+            get
+            {
+                return Convert.ToDouble(this["-B"]);
+            }
+        }
+        public string SecondFile
+        {
+            get
+            {
+                return this["-g"] as string;
+            }
+        }
+        public string ThirdFile
+        {
+            get
+            {
+                return this["-i"] as string;
             }
         }
         private void Parse()

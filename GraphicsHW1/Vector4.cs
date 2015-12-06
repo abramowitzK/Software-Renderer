@@ -81,14 +81,14 @@ namespace GraphicsHW.Math
         }
         public static Vector4<T> operator +(Vector4<T> vec1, Vector4<T> vec2)
         {
-            return new Vector4<T>((dynamic)vec1.X + vec2.X, (dynamic)vec1.Y + vec2.Y, (dynamic)vec1.Z + vec1.Z,(dynamic)1.0);
+            return new Vector4<T>((dynamic)vec1.X + vec2.X, (dynamic)vec1.Y + vec2.Y, (dynamic)vec1.Z + vec2.Z,(dynamic)1.0);
         }
         public static Vector4<T> operator *(double t, Vector4<T> vec1)
         {
             vec1.X = (dynamic)vec1.X * t;
             vec1.Y = (dynamic)vec1.Y * t;
             vec1.Z = (dynamic)vec1.Z * t;
-            vec1.W = (dynamic)vec1.Z * t;
+            vec1.W = (dynamic)vec1.W * t;
             return vec1;
         }
         public static Vector4<double> ParseLine(string[] splitLine)

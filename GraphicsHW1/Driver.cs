@@ -18,7 +18,7 @@ namespace GraphicsHW
             Arguments a = new Arguments(args);
             //Read the input file specified in the arguments
             //PostscriptReader rdr = new PostscriptReader(a.InputFile);
-            SMFReader rdr = new SMFReader(a.InputFile);
+            SMFReader rdr = new SMFReader(a.FirstModel);
             List<Polygon3D> prims = rdr.ReadFile();
             Matrix4<double> cameraTranslation = new Matrix4<double>
                 (
@@ -101,7 +101,6 @@ namespace GraphicsHW
                 {
                     foreach (var v in p)
                     {
-                        v.Z = 0 ;
                         v.X += 1;
                         v.Y += 1;
                         v.X *= (a.XUpper - a.XLower)/2;
@@ -129,12 +128,14 @@ namespace GraphicsHW
                 }
 
             }
+            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper, a.VP_XLower, a.VP_XUpper, a.VP_YLower, a.VP_YUpper, a.BackPlaneVRC, a.FrontPlaneVRC);
             foreach (var p in acceptedPolys)
             {
                 p.MapToViewPort(PixelBuffer.GetVPMatrix(a.XLower, a.XUpper, a.YLower, a.YUpper, a.VP_XLower, a.VP_XUpper, a.VP_YLower, a.VP_YUpper));
+                pb.FillPolygon(p);
             }
             ////Draw lines
-            PixelBuffer pb = new PixelBuffer(a.XLower, a.XUpper, a.YLower, a.YUpper, a.VP_XLower, a.VP_XUpper, a.VP_YLower, a.VP_YUpper);
+
             pb.DrawPolygon3D(acceptedPolys);
             Console.Write(pb.WriteToXPM());
         }
